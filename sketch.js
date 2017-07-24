@@ -1,9 +1,10 @@
 var img;
 var logo;
 var gondola;
-var startX = 0;
+var phone;
+var startX = 100;
 var stopX = 750;
-var startY = 736;
+var startY = 700;
 var stopY = 153;
 var x = startX;
 var y = startY;
@@ -12,14 +13,15 @@ var pct = 0.0;
 
 function preload() {
   img = loadImage("assets/background.png");
+  phone = loadImage('assets/phone.png');
   logo = loadImage("assets/logo.png");
   gondola = loadImage("assets/gondola.png");
 }
 
 function setup() {
-  createCanvas(750,1333);
+  createCanvas(750,1334);
   background(0);
-  textSize(25);
+  textSize(20);
   textAlign(CENTER);
   textFont('DINOT-Black');
 
@@ -27,9 +29,15 @@ function setup() {
 }
 
 function draw() {
+
   image(img,0,0,width,height);
   noStroke();
   fill(77,110,163);
+  console.log(mouseX);
+
+  push();
+  translate(104,170);
+  scale(45 / 60.0);
 
   beginShape();
   vertex(333,798);
@@ -121,19 +129,25 @@ function draw() {
   vertex(750,1333);
   vertex(0,1333);
   endShape(CLOSE);
+  pop();
 
-
-  image(logo,181,1198,387,57);
+  image(logo,230,1075,280,41);
   stroke(0);
-  line(0,736,750,153);
+  line(100,700,750,153);
 
   if (pct < 1.0) {
     x = startX + ((stopX-startX)* pct);
     y = startY + ((stopY-startY)* pct);
     pct += step;
   }
-  image(gondola,x-70,y-18,145,270);
-
-  text(6,x+2,y+227);
+  image(gondola,x-70,y+5,145/1.5,270/1.5);
+  fill(0);
+  text(6,x-20,y+167);
+  image(phone,0,0,width,height);
+  fill(255);
+  noStroke();
+  rect(0,0,width,10);
+  rect(0,height-10,width,10);
+  rect(width-10,0,10,height);
 
 }
