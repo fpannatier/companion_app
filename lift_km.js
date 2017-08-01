@@ -10,6 +10,10 @@ var x = startX;
 var y = startY;
 var step = 0.002;
 var pct = 0.0;
+var maxPct = 0.5;
+
+var kmSlider;
+var liftsSlider;
 
 function preload() {
   img = loadImage("assets/background.png");
@@ -26,6 +30,13 @@ function setup() {
   textFont('DINOT-Black');
 
 
+  kmSlider = createSlider(0,1000,500);
+  kmSlider.position(200,1300);
+
+  liftsSlider = createSlider(0,30,6);
+  liftsSlider.position(400,1300);
+
+  frameRate(30);
 }
 
 function draw() {
@@ -33,7 +44,7 @@ function draw() {
   image(img,0,0,width,height);
   noStroke();
   fill(77,110,163);
-  console.log(mouseX);
+  //console.log(mouseX);
 
   push();
   translate(104,170);
@@ -135,14 +146,21 @@ function draw() {
   stroke(0);
   line(100,700,750,153);
 
-  if (pct < 1.0) {
+  maxPct = map(kmSlider.value(),0,1000,0,1);
+
+  if (pct <= maxPct) {
     x = startX + ((stopX-startX)* pct);
     y = startY + ((stopY-startY)* pct);
     pct += step;
   }
+  else if(pct>maxPct){
+    pct = maxPct;
+  }
+
   image(gondola,x-70,y+5,145/1.5,270/1.5);
   fill(0);
-  text(6,x-20,y+167);
+
+  text(liftsSlider.value(),x-20,y+167);
   image(phone,0,0,width,height);
   fill(255);
   noStroke();
