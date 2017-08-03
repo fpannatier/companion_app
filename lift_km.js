@@ -30,11 +30,13 @@ function setup() {
   textFont('DINOT-Black');
 
 
-  kmSlider = createSlider(0,1000,500);
-  kmSlider.position(200,1300);
+  kmSlider = createSlider(0,800,380);
+  kmSlider.position(200,1350);
+  createP('Liftkilometer').position(235, 1310);
 
-  liftsSlider = createSlider(0,30,6);
-  liftsSlider.position(400,1300);
+  liftsSlider = createSlider(0,100,6);
+  liftsSlider.position(400,1350);
+  createP('Benutzte Anlagen').position(418, 1310);
 
   frameRate(30);
 }
@@ -159,7 +161,8 @@ function draw() {
 
   image(gondola,x-70,y+5,145/1.5,270/1.5);
   fill(0);
-
+  textAlign('center');
+  textSize(22);
   text(liftsSlider.value(),x-20,y+167);
   image(phone,0,0,width,height);
   fill(255);
@@ -167,5 +170,9 @@ function draw() {
   rect(0,0,width,10);
   rect(0,height-10,width,10);
   rect(width-10,0,10,height);
+  textSize(25);
+  textAlign('left')
+  text('Benutzte Anlagen: '+liftsSlider.value(),150,300);
+  text('Liftkilometer: '+kmSlider.value(),150,270);
 
 }
