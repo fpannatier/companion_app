@@ -15,6 +15,16 @@ var maxPct = 0.5;
 var kmSlider;
 var liftsSlider;
 
+//snow variables
+var quantity = 100;
+var xPosition = [];
+var yPosition = [];
+var flakeSize = [];
+var direction = [];
+var minFlakeSize = 1;
+var maxFlakeSize = 10;
+var snowColor = 255;
+
 function preload() {
   img = loadImage("assets/background.png");
   phone = loadImage('assets/phone.png');
@@ -23,7 +33,7 @@ function preload() {
 }
 
 function setup() {
-  createCanvas(750,1334);
+  createCanvas(750,1380);
   background(0);
   textSize(20);
   textAlign(CENTER);
@@ -31,19 +41,25 @@ function setup() {
 
 
   kmSlider = createSlider(0,800,380);
-  kmSlider.position(200,1350);
-  createP('Liftkilometer').position(235, 1310);
-
+  kmSlider.position(110,1350);
+  //createP('Liftkilometer').position(235, 1310);
   liftsSlider = createSlider(0,100,6);
-  liftsSlider.position(400,1350);
-  createP('Benutzte Anlagen').position(418, 1310);
+  liftsSlider.position(460,1350);
+  //createP('Benutzte Anlagen').position(418, 1310);
 
+  //snow setup
   frameRate(30);
+  for(var i = 0; i < quantity; i++) {
+    flakeSize[i] = round(random(minFlakeSize, maxFlakeSize));
+    xPosition[i] = random(0, width);
+    yPosition[i] = random(0, height);
+    direction[i] = round(random(0, 1));
+  }
 }
 
 function draw() {
 
-  image(img,0,0,width,height);
+  image(img,0,0,width,1334);
   noStroke();
   fill(77,110,163);
   //console.log(mouseX);
@@ -164,15 +180,41 @@ function draw() {
   textAlign('center');
   textSize(22);
   text(liftsSlider.value(),x-20,y+167);
-  image(phone,0,0,width,height);
+  fill(255);
+  drawSnow();
+  image(phone,0,0,width,1334);
   fill(255);
   noStroke();
   rect(0,0,width,10);
-  rect(0,height-10,width,10);
+  rect(0,height-50,width,60);
   rect(width-10,0,10,height);
   textSize(25);
   textAlign('left')
   text('Benutzte Anlagen: '+liftsSlider.value(),150,300);
   text('Liftkilometer: '+kmSlider.value(),150,270);
+  fill(0);
+  textSize(35);
+  text('Liftkilometer',80,1340);
+  text('Benutzte Anlagen',390,1340);
 
+}
+
+function drawSnow() {
+	for(var i = 0; i < xPosition.length; i++) {
+    noStroke();
+    ellipse(xPosition[i], yPosition[i], flakeSize[i], flakeSize[i]);
+
+    if(direction[i] == 0) {
+      xPosition[i] += map(flakeSize[i], minFlakeSize, maxFlakeSize, .1, .5);
+    } else {
+      xPosition[i] -= map(flakeSize[i], minFlakeSize, maxFlakeSize, .1, .5);
+    }
+
+    yPosition[i] += flakeSize[i] + direction[i];
+
+    if(xPosition[i] > width + flakeSize[i] || xPosition[i] < -flakeSize[i] || yPosition[i] > height + flakeSize[i]) {
+      xPosition[i] = random(0, width);
+      yPosition[i] = -flakeSize[i];
+    }
+  }
 }
